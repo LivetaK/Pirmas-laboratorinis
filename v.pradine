@@ -1,41 +1,46 @@
 #include <iostream>
-
+#include <iomanip>
 
 using namespace std;
 
 struct mok {
 string var, pav;
-int nd[10];
-int eg;
+int nd[10],eg;
 };
 
-int main{
-int n;
-n=0;
-cout << " kiek is viso yra studentu?";
-cin >> n;
-mok *grupe = new mok[n];
-for ( int i=0; i<n; i++) {
-  cin >> mok[i].var >> mok[i].pav;
-  for (int j=0; j<10; j++){
-  cin >> mok[j].nd;
-  };
-  };
-int *vid= new double [n];
-int *gal=new double[n];
-int sum[n];
-for (int i=0; i<n;i++){
-for (int j=0; j<10;j++){
-sum[i] =sum+mok[i].nd[j];
-}
-vid[i]=sum[i]/10;
-gal[i]=0.4*vid[i]+0.6*mok[i].eg;
-};
+int main(){
+    int n;
+    cout << "Kiek is viso yra studentu?" << endl;
+    cin >> n;
+    mok *stud = new mok[n];
+    for ( int i=0; i<n; i++) {
+        cout << "iveskite studento varda ir pavarde"<< endl;
+        cin >> stud[i].var >> stud[i].pav;
+        cout << "iveskite 10 namu darbu tarpiniu rezultatu" << endl;
+        for (int j=0; j<10; j++){
+        cin >> stud[i].nd[j];
+    }
+    cout << "iveskite egzamino rezultata" << endl;
+    cin >> stud[i].eg;
+    };
+    double *vid= new double[n];
+    double *gal=new double[n];
+    int sum;
+    for (int i=0; i<n;i++){
+            sum=0;
+        for (int j=0; j<10;j++){
+            sum+=stud[i].nd[j];
+            }
+        vid[i]=sum/10;
+        gal[i]=0.4*vid[i]+0.6*stud[i].eg;
+    };
 
-cout << "Pavarde" << "         " << "Vardas" << "           " << "Galutinis (Vid.)" << endl;
-cout << "----------------------------------------------------------------- << endl;
-for (int i=0; i<n; i++){
-cout << mok[i].var << " " << mok[i].pav << " " <<
-
-
-
+    cout << left << setw(20) <<"Pavarde" << setw(20) << "Vardas" << setw(20) << "Galutinis (Vid.)" << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+    for (int i=0; i<n; i++){
+    cout << left << setw(20) << stud[i].var << setw(20)<< stud[i].pav << setw(20) << fixed << setprecision(2) << gal[i] << endl;
+    };
+    delete[] stud;
+    delete[] vid;
+    delete[] gal;
+    };
