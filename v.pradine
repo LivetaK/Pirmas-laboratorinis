@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 
@@ -39,11 +40,7 @@ int main(){
     string stop;
     int n=0;
     mok* stud = nullptr;
-    while (cin >> stop){
-            if (stop == "stop"){
-                break;
-            }
-
+    while (cin >> stop && stop != "stop"){
         n+=1;
         mok* naujasMasyvas = new mok[n];
         for (int i = 0; i < n - 1; i++) {
@@ -53,38 +50,30 @@ int main(){
         stud = naujasMasyvas;
         ivedimas(stud, n-1);
     }
-
-
-
-
     double *vid= new double[n];
     double *gal_vid=new double[n];
     double *gal_med = new double[n];
     int sum;
     int med;
-    for (int i=0; i<n;i++){
-            sum=0;
-        for (int j=0; j<10;j++){
-            sum+=stud[i].nd[j];
-            }
-        vid[i]=sum/10;
-        gal_vid[i]=0.4*vid[i]+0.6*stud[i].eg;
-    };
-    for (int i=0; i<n; i++){
-            med=0;
-        for (int j=0; j<10;j++){
-            if (stud[i].nd[j]>stud[i].nd[j+1]){
-                double k= stud[i].nd[j];
-                stud[i].nd[j] = stud[i].nd[j + 1];
-                stud[i].nd[j + 1] = k;
+    for (int i = 0; i < n; i++) {
+        sum = 0;
 
-
-            }
-            med= (stud[i].nd[4]+stud[i].nd[5])/2;
-            gal_med[i]=0.4*med+0.6*stud[i].eg;
-
+        for (int j = 0; j < stud[i].ndCount; j++) {
+            sum += stud[i].nd[j];
         }
-    };
+
+        vid[i] = sum / stud[i].ndCount;
+        gal_vid[i] = 0.4 * vid[i] + 0.6 * stud[i].eg;
+
+        sort(stud[i].nd, stud[i].nd + stud[i].ndCount);
+
+        if (stud[i].ndCount % 2 == 1) {
+            med = stud[i].nd[stud[i].ndCount / 2];
+        } else {
+            med = (stud[i].nd[stud[i].ndCount / 2 - 1] + stud[i].nd[stud[i].ndCount / 2]) / 2;
+        }
+
+        gal_med[i] = 0.4 * med + 0.6 * stud[i].eg;
     int a;
     cout <<"Jei norite matyti galutini rezultata apskaiciuota pagal:" << endl;
     cout << "vidurki - iveskite vieneta" << endl;
@@ -107,4 +96,7 @@ int main(){
     delete[] stud;
     delete[] vid;
     delete[] gal_vid;
+    delete[] gal_med;
+
     };
+}
