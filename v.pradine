@@ -5,24 +5,58 @@ using namespace std;
 
 struct mok {
 string var, pav;
-int nd[10],eg;
+int* nd;
+int eg;
+int ndCount;
 };
 
-int main(){
-    int n;
-    cout << "Kiek is viso yra studentu?" << endl;
-    cin >> n;
-    mok *stud = new mok[n];
-    for ( int i=0; i<n; i++) {
-        cout << "iveskite studento varda ir pavarde"<< endl;
-        cin >> stud[i].var >> stud[i].pav;
-        cout << "iveskite 10 namu darbu tarpiniu rezultatu" << endl;
-        for (int j=0; j<10; j++){
-        cin >> stud[i].nd[j];
+void ivedimas(mok* stud, int n) {
+
+    cout << "iveskite studento varda ir pavarde" << endl;
+    cin >> stud[n].var >> stud[n].pav;
+    int pazymys;
+    stud[n].ndCount = 0;
+    stud[n].nd =nullptr;
+    cout << "iveskite studento tarpinius namu darbu rezultatus(noredami uzbaigti, iveskite neigiama skaiciu)" << endl;
+    while (cin >> pazymys) {
+            if (pazymys < 0) {
+                break;
+            }
+        int* naujasMasyvas = new int[stud[n].ndCount + 1];
+        for (int i = 0; i < stud[n].ndCount; i++) {
+            naujasMasyvas[i] = stud[n].nd[i];
+        }
+        delete[] stud[n].nd;
+        stud[n].nd = naujasMasyvas;
+        stud[n].nd[stud[n].ndCount++] = pazymys;
     }
-    cout << "iveskite egzamino rezultata" << endl;
-    cin >> stud[i].eg;
-    };
+    cout << "iveskite studento egzamino rezultata" << endl;
+    cin >> stud[n].eg;
+}
+
+int main(){
+    cout << "noredami ivesti studento duomenis, iveskite bet kokia raide, noredami uzbaigti, parasykite 'stop'"<< endl;
+    string stop;
+    int n=0;
+    mok* stud = nullptr;
+    while (cin >> stop){
+            if (stop == "stop"){
+                break;
+            }
+
+        n+=1;
+        mok* naujasMasyvas = new mok[n];
+        for (int i = 0; i < n - 1; i++) {
+            naujasMasyvas[i] = stud[i];
+        }
+        delete[] stud;
+        stud = naujasMasyvas;
+        ivedimas(stud, n-1);
+    }
+
+
+
+
     double *vid= new double[n];
     double *gal_vid=new double[n];
     double *gal_med = new double[n];
