@@ -14,12 +14,12 @@ int n;
 
 void ivedimas(mok* stud, int n) {
 
-    cout << "iveskite studento varda ir pavarde" << endl;
+    cout << "Iveskite studento varda ir pavarde:" << endl;
     cin >> stud[n].var >> stud[n].pav;
     int pazymys;
     stud[n].ndCount = 0;
     stud[n].nd =nullptr;
-    cout << "iveskite studento tarpinius namu darbu rezultatus(noredami uzbaigti, iveskite neigiama skaiciu)" << endl;
+    cout << "Iveskite studento tarpinius namu darbu rezultatus(noredami uzbaigti, iveskite neigiama skaiciu):" << endl;
     while (cin >> pazymys) {
             if (pazymys < 0) {
                 break;
@@ -32,16 +32,16 @@ void ivedimas(mok* stud, int n) {
         stud[n].nd = naujasMasyvas;
         stud[n].nd[stud[n].ndCount++] = pazymys;
     }
-    cout << "iveskite studento egzamino rezultata" << endl;
+    cout << "Iveskite studento egzamino rezultata:" << endl;
     cin >> stud[n].eg;
 }
 
 void meniu (){
     cout << "Pasirinkite" << endl;
-    cout << "1. Ivesti studentu duomenis ranka"<< endl;
-    cout << "2. Pazymius sugeneruoti automatiskai" << endl;
-    cout << "3. Automatiskai sugeneruoti it pazymius, ir studentu vardus, pavardes" << endl;
-    cout << "4. Baigti darbą" << endl;
+    cout << "1. Ivesti studentu duomenis ranka."<< endl;
+    cout << "2. Pazymius sugeneruoti automatiskai." << endl;
+    cout << "3. Automatiskai sugeneruoti it pazymius, ir studentu vardus, pavardes." << endl;
+    cout << "4. Baigti darba." << endl;
 }
 
 void isvedimas(mok* stud, double* gal_vid, double* gal_med){
@@ -81,7 +81,7 @@ int main(){
 
     do {
         meniu();
-        cout << "Jūsų pasirinkimas: ";
+        cout << "Jusu pasirinkimas: ";
         cin >> Pasirinkimas;
 
 
@@ -121,14 +121,21 @@ int main(){
                     delete[] stud;
             break;}
             case 2: {
-                cout << "Iveskite studentu kieki" << endl;
+                cout << "Iveskite studentu kieki:" << endl;
                 cin >> n;
+                delete[] vid;
+                delete[] gal_vid;
+                delete[] gal_med;
+                vid = new double[n];
+                gal_vid = new double[n];
+                gal_med = new double[n];
+
                 mok *stud = new mok[n];
                 for (int i = 0; i < n; i++){
-                    cout << "Iveskite studento varda ir pavarde" << endl;
+                    cout << "Iveskite studento varda ir pavarde:" << endl;
                     cin >> stud[i].var >> stud[i].pav;
                     int pazymys;
-                    cout << "Kiek pazymiu norite, kad programa sugeneruotu?" << endl;
+                    cout << "Kiek pazymiu norite, kad programa sugeneruotu?:" << endl;
                     cin >> pazymys;
                     stud[i].ndCount = pazymys;
                     stud[i].nd = new int[pazymys];
@@ -158,9 +165,16 @@ int main(){
                 break;
 
             }
-            case 3:{ cout << "Iveskite studentu kieki" << endl;
+            case 3:{ cout << "Iveskite studentu kieki:" << endl;
                 cin >> n;
-                cout << "Kiek pazymiu norite, kad programa sugeneruotu kiekvienam studentui?" << endl;
+                delete[] vid;
+                delete[] gal_vid;
+                delete[] gal_med;
+                vid = new double[n];
+                gal_vid = new double[n];
+                gal_med = new double[n];
+
+                cout << "Kiek pazymiu norite, kad programa sugeneruotu kiekvienam studentui?:" << endl;
                 int pazymys;
                 cin >> pazymys;
                 mok *stud = new mok[n];
@@ -195,24 +209,16 @@ int main(){
                 isvedimas(stud, gal_vid, gal_med);
                 delete[] stud;
                 break;
-
             }
             case 0:{
                 cout << "Programa baigta." << endl;
                 break;}
             default:{
-                cout << "Neteisingas pasirinkimas. Bandykite dar kartą." << endl;
+                cout << "Neteisingas pasirinkimas. Bandykite dar karta." << endl;
         }
-
     }} while (Pasirinkimas != 4);
-
-
-
 
     delete[] vid;
     delete[] gal_vid;
     delete[] gal_med;
-
-
-
 }
