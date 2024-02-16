@@ -10,6 +10,7 @@ int* nd;
 int eg;
 int ndCount;
 };
+int n;
 
 void ivedimas(mok* stud, int n) {
 
@@ -35,57 +36,125 @@ void ivedimas(mok* stud, int n) {
     cin >> stud[n].eg;
 }
 
+void meniu (){
+    cout << "Pasirinkite" << endl;
+    cout << "1. Ivesti studentu duomenis ranka"<< endl;
+    cout << "2. Pazymius sugeneruoti automatiskai" << endl;
+    cout << "3. Automatiskai sugeneruoti it pazymius, ir studentu vardus, pavardes" << endl;
+    cout << "4. Baigti darbą" << endl;
+}
+
+
 int main(){
-    cout << "noredami ivesti studento duomenis, iveskite bet kokia raide, noredami uzbaigti, parasykite 'stop'"<< endl;
-    string stop;
-    int n=0;
-    mok* stud = nullptr;
-    while (cin >> stop && stop != "stop"){
-        n+=1;
-        mok* naujasMasyvas = new mok[n];
-        for (int i = 0; i < n - 1; i++) {
-            naujasMasyvas[i] = stud[i];
+    int Pasirinkimas;
+    do {
+        meniu();
+        cout << "Jūsų pasirinkimas: ";
+        cin >> Pasirinkimas;
+
+        switch (Pasirinkimas) {
+            case 1:
+                    cout << "Noredami ivesti naujo studento duomenis, iveskite bet koki simboli, noredami uzbaigti, parasykite 'stop'"<< endl;
+                    string stop;
+                    n=0;
+                    mok* stud = nullptr;
+                    while (cin >> stop && stop != "stop"){
+                        n+=1;
+                        mok* naujasMasyvas = new mok[n];
+                        for (int i = 0; i < n - 1; i++) {
+                            naujasMasyvas[i] = stud[i];
+                            }
+                        delete[] stud;
+                        stud = naujasMasyvas;
+                        ivedimas(stud, n-1);
+                    }
+                    double *vid= new double[n];
+                    double *gal_vid=new double[n];
+                    double *gal_med = new double[n];
+                    int sum;
+                    int med;
+                    for (int i = 0; i < n; i++) {
+                        sum = 0;
+                        for (int j = 0; j < stud[i].ndCount; j++) {
+                            sum += stud[i].nd[j];
+                            }
+                    vid[i] = sum / stud[i].ndCount;
+                    gal_vid[i] = 0.4 * vid[i] + 0.6 * stud[i].eg;
+                    sort(stud[i].nd, stud[i].nd + stud[i].ndCount);
+                    if (stud[i].ndCount % 2 == 1) {
+                        med = stud[i].nd[stud[i].ndCount / 2];
+                        } else {
+                        med = (stud[i].nd[stud[i].ndCount / 2 - 1] + stud[i].nd[stud[i].ndCount / 2]) / 2;
+                        }
+                    gal_med[i] = 0.4 * med + 0.6 * stud[i].eg;
+                    }
+            break;
+            case 2:
+                cout << "Iveskite studentu kieki" << endl;
+                cin >> n;
+                mok *stud = new mok[n];
+                for (int i = 0; i < n; i++){
+                    cout << "Iveskite studento varda ir pavarde" << endl;
+                    cin >> stud[i].var >> stud[i].pav;
+                    int pazymys;
+                    cout << "Kiek pazymiu norite, kad programa sugeneruotu?" << endl;
+                    cin >> pazymys;
+                    stud[i].ndCount = pazymys;
+                    stud[i].nd = new int[pazymys];
+                    double *vid= new double[n];
+                    double *gal_vid=new double[n];
+                    double *gal_med = new double[n];
+                    int sum;
+                    int med;
+                    sum=0;
+                    int *paz =new int[pazymys];
+                    srand(time(NULL));
+                    for (int j = 0; j < pazymys; j++) {
+                            stud[i].nd[j] = rand() % 10 + 1;
+                            sum += stud[i].nd[j];
+                            }
+                    sort(stud[i].nd, stud[i].nd + pazymys);
+                    vid[i] = sum / pazymys;
+                    stud[i].eg = rand() % 10 + 1;
+                    gal_vid[i] = 0.4 * vid + 0.6 * stud[i].eg;
+                    if (pazymys % 2 == 1) {
+                        med = stud[i].nd[pazymys / 2];
+                        } else {
+                            med = (stud[i].nd[pazymys / 2 - 1] + stud[i].nd[pazymys / 2]) / 2;
+                            }
+                    gal_med[i] = 0.4 * med + 0.6 * stud[i].eg;
+                }
+                delete[] paz;
+                for (int i = 0; i < n; i++) {
+                    delete[] stud[i].nd;
+                }
+
+                break;
+            case 3:
+                // Apskaičiuoti galutinius rezultatus
+                cout << "Funkcija: Apskaičiuoti galutinius rezultatus" << endl;
+                break;
+            case 0:
+                cout << "Programa baigta." << endl;
+                break;
+            default:
+                cout << "Neteisingas pasirinkimas. Bandykite dar kartą." << endl;
         }
-        delete[] stud;
-        stud = naujasMasyvas;
-        ivedimas(stud, n-1);
-    }
-    double *vid= new double[n];
-    double *gal_vid=new double[n];
-    double *gal_med = new double[n];
-    int sum;
-    int med;
-    for (int i = 0; i < n; i++) {
-        sum = 0;
 
-        for (int j = 0; j < stud[i].ndCount; j++) {
-            sum += stud[i].nd[j];
-        }
+    } while (Pasirinkimas != 4);
 
-        vid[i] = sum / stud[i].ndCount;
-        gal_vid[i] = 0.4 * vid[i] + 0.6 * stud[i].eg;
-
-        sort(stud[i].nd, stud[i].nd + stud[i].ndCount);
-
-        if (stud[i].ndCount % 2 == 1) {
-            med = stud[i].nd[stud[i].ndCount / 2];
-        } else {
-            med = (stud[i].nd[stud[i].ndCount / 2 - 1] + stud[i].nd[stud[i].ndCount / 2]) / 2;
-        }
-
-        gal_med[i] = 0.4 * med + 0.6 * stud[i].eg;
-    int a;
+    char a;
     cout <<"Jei norite matyti galutini rezultata apskaiciuota pagal:" << endl;
-    cout << "vidurki - iveskite vieneta" << endl;
-    cout << "mediana - iveskite dvejeta"<< endl;
+    cout << "vidurki - iveskite V" << endl;
+    cout << "mediana - iveskite M"<< endl;
     cin >> a;
-    if (a==1){
+    if (a=="V"){
             cout << left << setw(20) <<"Pavarde" << setw(20) << "Vardas" << setw(20) << "Galutinis (Vid.)" << endl;
             cout << "--------------------------------------------------------------" << endl;
             for (int i=0; i<n; i++){
             cout << left << setw(20) << stud[i].var << setw(20)<< stud[i].pav << setw(20) << fixed << setprecision(2) << gal_vid[i] << endl;
         }
-    } if (a==2){
+    } if (a=="M"){
             cout << left << setw(20) <<"Pavarde" << setw(20) << "Vardas" << setw(20) <<  "Galutinis (Med.)" << endl;
             cout << "--------------------------------------------------------------" << endl;
             for (int i=0; i<n; i++){
@@ -98,5 +167,5 @@ int main(){
     delete[] gal_vid;
     delete[] gal_med;
 
-    };
+
 }
