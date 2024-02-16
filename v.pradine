@@ -1,76 +1,127 @@
 #include <iostream>
 #include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <cstdlib> // For rand() and srand()
+#include <ctime>   // For time()
 
 using namespace std;
 
 struct mok {
-string var, pav;
-int nd[10],eg;
+    string var, pav;
+    vector<int> nd;
+    int eg;
 };
 
-int main(){
-    int n;
-    cout << "Kiek is viso yra studentu?" << endl;
-    cin >> n;
-    mok *stud = new mok[n];
-    for ( int i=0; i<n; i++) {
-        cout << "iveskite studento varda ir pavarde"<< endl;
-        cin >> stud[i].var >> stud[i].pav;
-        cout << "iveskite 10 namu darbu tarpiniu rezultatu" << endl;
-        for (int j=0; j<10; j++){
-        cin >> stud[i].nd[j];
+void ivedimas(vector<mok>& stud) {
+    mok tempStudent;
+    cout << "Iveskite studento varda ir pavarde:" << endl;
+    cin >> tempStudent.var >> tempStudent.pav;
+
+    int pazymys;
+    cout << "Iveskite studento tarpinius namu darbu rezultatus (noredami uzbaigti, iveskite neigiama skaiciu):" << endl;
+    while (cin >> pazymys && pazymys >= 0) {
+        tempStudent.nd.push_back(pazymys);
     }
-    cout << "iveskite egzamino rezultata" << endl;
-    cin >> stud[i].eg;
-    };
-    double *vid= new double[n];
-    double *gal_vid=new double[n];
-    double *gal_med = new double[n];
-    int sum;
-    int med;
-    for (int i=0; i<n;i++){
-            sum=0;
-        for (int j=0; j<10;j++){
-            sum+=stud[i].nd[j];
-            }
-        vid[i]=sum/10;
-        gal_vid[i]=0.4*vid[i]+0.6*stud[i].eg;
-    };
-    for (int i=0; i<n; i++){
-            med=0;
-        for (int j=0; j<10;j++){
-            if (stud[i].nd[j]>stud[i].nd[j+1]){
-                double k= stud[i].nd[j];
-                stud[i].nd[j] = stud[i].nd[j + 1];
-                stud[i].nd[j + 1] = k;
 
+    cout << "Iveskite studento egzamino rezultata:" << endl;
+    cin >> tempStudent.eg;
 
-            }
-            med= (stud[i].nd[4]+stud[i].nd[5])/2;
-            gal_med[i]=0.4*med+0.6*stud[i].eg;
+    stud.push_back(tempStudent);
+}
 
+void generateRandomData(vector<mok>& stud, int n) {
+    string vardai[] = {"Liveta", "Roberta", "Paulina", "Ugne", "Gabriele", "Kamile", "Marija", "Rugile", "Jovita", "Adriana"};
+    string pavardes[] = {"Kavaliauskaite", "Jurpalyte", "Podgaiska", "Mockute", "Vaitiekute", "Zobelaite", "Zubareva", "Macaite", "Vencauskaite", "Sirokyte"};
+    int pazymiuSk = 5; // Fixed number of grades for simplicity
+
+    for (int i = 0; i < n; ++i) {
+        mok tempStudent;
+        tempStudent.var = vardai[rand() % 10];
+        tempStudent.pav = pavardes[rand() % 10];
+
+        for (int j = 0; j < pazymiuSk; ++j) {
+            tempStudent.nd.push_back(rand() % 10 + 1);
         }
-    };
-    int a;
-    cout <<"Jei norite matyti galutini rezultata apskaiciuota pagal:" << endl;
-    cout << "vidurki - iveskite vieneta" << endl;
-    cout << "mediana - iveskite dvejeta"<< endl;
+
+        tempStudent.eg = rand() % 10 + 1;
+        stud.push_back(tempStudent);
+    }
+}
+
+void calculateGrades(const vector<mok>& stud, vector<double>& gal_vid, vector<double>& gal_med) {
+    for (const auto& s : stud) {
+        double sum = 0;
+        for (int grade : s.nd) {
+            sum += grade;
+        }
+        double avg = sum / s.nd.size();
+        gal_vid.push_back(avg * 0.4 + s.eg * 0.6);
+
+        vector<int> sortedGrades = s.nd;
+        sort(sortedGrades.begin(), sortedGrades.end());
+        double med;
+        if (sortedGrades.size() % 2 == 0) {
+            med = (sortedGrades[sortedGrades.size() / 2 - 1] + sortedGrades[sortedGrades.size() / 2]) / 2.0;
+        } else {
+            med = sortedGrades[sortedGrades.size() / 2];
+        }
+        gal_med.push_back(med * 0.4 + s.eg * 0.6);
+    }
+}
+
+void meniu() {
+    cout << "Pasirinkite" << endl;
+    cout << "1. Ivesti studentu duomenis ranka." << endl;
+    cout << "2. Generuoti studentu duomenis automatiskai." << endl;
+    cout << "3. Baigti darba." << endl;
+}
+
+void isvedimas(const vector<mok>& stud, const vector<double>& gal_vid, const vector<double>& gal_med) {
+    char a;
+    cout << "Jei norite matyti galutini rezultata apskaiciuota pagal:" << endl;
+    cout << "vidurki - iveskite V" << endl;
+    cout << "mediana - iveskite M" << endl;
     cin >> a;
-    if (a==1){
-            cout << left << setw(20) <<"Pavarde" << setw(20) << "Vardas" << setw(20) << "Galutinis (Vid.)" << endl;
-            cout << "--------------------------------------------------------------" << endl;
-            for (int i=0; i<n; i++){
-            cout << left << setw(20) << stud[i].var << setw(20)<< stud[i].pav << setw(20) << fixed << setprecision(2) << gal_vid[i] << endl;
-        }
-    } if (a==2){
-            cout << left << setw(20) <<"Pavarde" << setw(20) << "Vardas" << setw(20) <<  "Galutinis (Med.)" << endl;
-            cout << "--------------------------------------------------------------" << endl;
-            for (int i=0; i<n; i++){
-            cout << left << setw(20) << stud[i].var << setw(20)<< stud[i].pav << setw(20) << fixed << setprecision(2) << gal_med[i] << endl;
-        }
-        };
 
-    delete[] stud;
-    delete[] vid;
-    delete[] gal_vid;
-    };
+    cout << left << setw(20) << "Pavarde" << setw(20) << "Vardas" << setw(20);
+    cout << (a == 'V' ? "Galutinis (Vid.)" : "Galutinis (Med.)") << endl;
+    cout << "----------------------------------------------------------------" << endl;
+    for (size_t i = 0; i < stud.size(); i++) {
+        cout << left << setw(20) << stud[i].pav << setw(20) << stud[i].var << setw(20) << fixed << setprecision(2);
+        cout << (a == 'V' ? gal_vid[i] : gal_med[i]) << endl;
+    }
+}
+
+int main() {
+    vector<mok> stud;
+    vector<double> gal_vid, gal_med;
+    int Pasirinkimas, n;
+
+    srand(static_cast<unsigned int>(time(nullptr)));
+
+    do {
+        meniu();
+        cout << "Jusu pasirinkimas: ";
+        cin >> Pasirinkimas;
+
+        switch (Pasirinkimas) {
+            case 1:
+                ivedimas(stud);
+                break;
+            case 2:
+                cout << "Iveskite generuojamu studentu skaiciu: ";
+                cin >> n;
+                generateRandomData(stud, n);
+                break;
+            case 3:
+                cout << "Programa baigta." << endl;
+                break;
+            default:
+                cout << "Neteisingas pasirinkimas. Bandykite dar karta." << endl;
+        }
+    } while (Pasirinkimas != 3);
+
+    calculateGrades(stud, gal_vid, gal_med);
+    isvedimas(stud, gal_vid, gal_med);
+}
