@@ -74,8 +74,8 @@ int main(){
     int sum;
     double med;
     char a;
-    string vardai[] = {"Jonas", "Petras", "Antanas", "Kazimieras", "Juozas", "Andrius", "Tomas"};
-    string pavardes[] = {"Jonaitis", "Petraitis", "Antanaitis", "Kazlauskas", "Juozapaitis", "Andriukaitis", "Tomaitis"};
+    string vardai[] = {"Liveta", "Roberta", "Paulina", "Ugne", "Gabriele", "Kamile", "Marija", "Rugile", "Jovita", "Adriana"};
+    string pavardes[] = {"Kavaliauskaite", "Jurpalyte", "Podgaiska", "Mockute", "Vaitiekute", "Zobelaite", "Zubareva", "Macaite", "Vencauskaite", "Sirokyte"};
 
     srand(time(NULL));
 
