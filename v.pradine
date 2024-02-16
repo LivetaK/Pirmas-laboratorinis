@@ -40,7 +40,7 @@ void meniu (){
     cout << "Pasirinkite" << endl;
     cout << "1. Ivesti studentu duomenis ranka."<< endl;
     cout << "2. Pazymius sugeneruoti automatiskai." << endl;
-    cout << "3. Automatiskai sugeneruoti it pazymius, ir studentu vardus, pavardes." << endl;
+    cout << "3. Automatiskai sugeneruoti ir pazymius, ir studentu vardus, pavardes." << endl;
     cout << "4. Baigti darba." << endl;
 }
 
