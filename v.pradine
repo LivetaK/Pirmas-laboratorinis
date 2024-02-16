@@ -6,7 +6,7 @@ using namespace std;
 struct mok {
 string var, pav;
 int nd[10],eg;
-};
+}
 
 int main(){
     int n;
